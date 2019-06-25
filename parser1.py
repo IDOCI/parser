@@ -45,9 +45,15 @@ for i,str in enumerate( patterns):
     f=open(tempdir+'/'+str)
     tbl=textfsm.TextFSM(f)
     arRe_tables.append(tbl)
-    ss=f"{directory}/outfile_{i}.csv"
-    arOutf.append(open(ss, "w+"))
-
+    ss=f"{directory}/result_{i}.csv"
+    outfile=open(ss, "w+")
+    arOutf.append(outfile)
+    # Display result as CSV and write it to the output file
+    # First the column headers...
+    print(tbl.header)
+    for s in tbl.header:
+        outfile.write("%s;" % s)
+    outfile.write("\n")
     f.close()
 ## Сохранение в Excel (доделать)
 # новая книга формата Excel:
