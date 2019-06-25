@@ -12,35 +12,20 @@ root = Tk()
 root.withdraw()
 
 ## Функция
-def fnParse(fname, arRe_tables, outfile, i):
+def fnParse(fname, arRe_tables, arOutFiles):
     input_file = open(fname, encoding='utf-8')
     raw_text_data = input_file.read()
-    iosFlag=False
-    nxFlag=False
-    errFlag=False
-    if "IOS" in raw_text_data(1):
-        iosFlag=True
-    elif "NX-OS" in raw_text_data(1):
-        nxFlag=True
-    else :
-        errFlag=True
-    input_file.close()
-    if iosFlag==True:
-       re_table=arRe_tables["""посмотреть какое"""]
-    if nxFlag==True:
-        re_table=arRe_tables["""посмотреть какое"""]
-    if errFlag==True:
-       print ('Такого шаблона нет!')
-    fsm_results = re_table.ParseText(raw_text_data)
-
-    counter = 0
-    for row in fsm_results:
-        print(row)
-        for s in row:
-            outfile.write("%s;" % s)
-        outfile.write("\n")
-        counter += 1
-    print("Write %d records" % counter)
+    for i,tbl in enumerate(arRe_tables):
+        outfile=arOutFiles[i]
+        fsm_results = tbl.ParseText(raw_text_data)
+        counter = 0
+        for row in fsm_results:
+            print(row)
+            for s in row:
+                outfile.write("%s;" % s)
+            outfile.write("\n")
+            counter += 1
+        print("Write %d records" % counter)
 
 ## Диалоговое окно
 #Выбор директории по диалоговому окну
@@ -50,14 +35,19 @@ directory=filedialog.askdirectory(title='Please select a directory')
 
 #Каталог из которого будем брать шаблон
 tempdir= (directory+'/templates')
+patterns=''
 
-#Получаем список файлов в переменную arRe_tables
+#Получаем список таблиц преобразования в переменную arRe_tables
 patterns = os.listdir(tempdir)
-
 arRe_tables=[]
-for str in patterns:
+arOutf=[]
+for i,str in enumerate( patterns):
     f=open(tempdir+'/'+str)
-    arRe_tables.append(f)
+    tbl=textfsm.TextFSM(f)
+    arRe_tables.append(tbl)
+    ss=f"{directory}/outfile_{i}.csv"
+    arOutf.append(open(ss, "w+"))
+
     f.close()
 ## Сохранение в Excel (доделать)
 # новая книга формата Excel:
@@ -65,21 +55,29 @@ wbk = xlwt.Workbook('utf-8')
 # добавляем лист:
 sheet = wbk.add_sheet('sheet 1')
 ## Временный вывод
+
 #создаем список файлов, которые будем читать
 files=os.listdir(directory)
+for fname in files:
+    if fname.endswith('.log'):
+        fnParse(directory+"/"+fname, arRe_tables, arOutf)
 
-# Результат пока что запишем в файл csv:
-outfile_name = open(directory+"/outfile.csv", "w+")
-outfile = outfile_name
-print(re_table.header)
-for s in re_table.header:
-    outfile.write("%s;" % s)
-outfile.write("\n")
-
-#открываем файлы поочередно
-trns=str.maketrans('','','\t\n\v\f\r')
-for i,str in enumerate(files):
-    if str.endswith('log'):
-        fnParse(directory+'/'+str, re_table, outfile, i)
-
-outfile.close()
+#
+#
+# print(arRe_tables[0])
+# for i,tbl in enumerate(arRe_tables):
+#     f=arOutf[i]
+#     for s in tbl.header:
+#         f.write("%s;" % s)
+#     f.write("\n")
+#
+# #открываем файлы поочередно
+# trns=str.maketrans('','','\t\n\v\f\r')
+# for i,str in enumerate(files):
+#     if str.endswith('log'):
+#         for j,tbl in enumerate(arRe_tables):
+#             fnParse(directory+'/'+str, tbl, arOutf(j), i)
+#
+# outfile.close()
+for f in arOutf:
+    f.close()
