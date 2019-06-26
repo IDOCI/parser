@@ -1,0 +1,3 @@
+UPTIME;LAST_REBOOT_REASON;OS;BOOT_IMAGE;PLATFORM;
+202 day(s), 18 hour(s), 36 minute(s), 37 second(s);Reset;6.2(16);bootflash:///n7000-s2-kickstart-npe.6.2.16.bin;C7009;
+230 day(s), 20 hour(s), 7 minute(s), 28 second(s);Reset;6.0(2)N1(2);bootflash:///n5000-uk9-kickstart.6.0.2.N1.2.bin;Nexus5548;

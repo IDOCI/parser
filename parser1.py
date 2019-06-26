@@ -13,24 +13,37 @@ root.withdraw()
 
 ## Функция
 def fnParse(fname, arPatFnames, arOutFiles):
+    input_file = open(fname, encoding='utf-8')
+    input_file.readline()
+    ss=input_file.readline()
+    if 'Cisco IOS' in ss:
+        word='IOS'
+    elif 'Cisco Nexus' in ss:
+        word='nxos'
+    else:
+        word=''
+    input_file.close()    
     for i,str in enumerate(arPatFnames):
-        # print(tbl.header)
-        input_file = open(fname, encoding='utf-8')
-        raw_text_data = input_file.read()
-        input_file.close()
-        outfile=arOutFiles[i]
-        f=open(tempdir+'/'+str)
-        tbl = textfsm.TextFSM(f)
-        f.close()
-        fsm_results = tbl.ParseText(raw_text_data)
-        counter = 0
-        for row in fsm_results:
-            for s in row:
-                outfile.write("%s;" % s)
-                if '68:BC:0C:DD:F0:00' in s:
-                    print(f'Найдено 68:BC:0C:DD:F0:00, i={i}, fname={fname}')
-            outfile.write("\n")
-            counter += 1
+        if (word=='') or (word.lower() in str.lower()):
+            input_file = open(fname, encoding='utf-8')
+            raw_text_data = input_file.read()
+            input_file.close()
+            outfile=arOutFiles[i]
+            f=open(tempdir+'/'+str)
+            tbl = textfsm.TextFSM(f)
+            f.close()
+            try:
+                fsm_results = tbl.ParseText(raw_text_data)
+                OK=True
+            except:
+                OK=False
+            if OK:
+                counter = 0
+                for row in fsm_results:
+                    for s in row:
+                        outfile.write("%s;" % s)
+                    outfile.write("\n")
+                    counter += 1
 ## Диалоговое окно
 #Выбор директории по диалоговому окну
 directory=filedialog.askdirectory(title='Please select a directory')
@@ -47,7 +60,7 @@ arPatFnames=[]
 arOutf=[]
 for i,str in enumerate(patterns):
     arPatFnames.append(str)
-    ss=f"{directory}/result_{i}.csv"
+    ss=f"{directory}/result_{str.replace('.template','')}.csv"
     outfile=open(ss, "w+")
     arOutf.append(outfile)
     # Display result as CSV and write it to the output file
@@ -90,3 +103,4 @@ for fname in files:
 # outfile.close()
 for f in arOutf:
     f.close()
+print ('All files parsed')

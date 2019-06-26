@@ -1,0 +1,3 @@
+VERSION;ROMMON;HOSTNAME;UPTIME;RELOAD_REASON;RUNNING_IMAGE;HARDWARE;SERIAL;CONFIG_REGISTER;MAC;
+12.2(58)SE1;Bootstrap;dc3-bch-G-27-21-bsw1;2 weeks, 4 days, 14 minutes;bus error at PC 0x1DD2138, address 0x0;/cbs31x0-universal-mz.122-58.SE1/cbs31x0-universal-mz.122-58.SE1.bin;['WS-CBS3120X-S'];['FOC1537T0GZ'];0xF;['68:BC:0C:DD:F0:00'];
+12.2(55)SE7;Bootstrap;dc3-msw4;2 years, 34 weeks, 23 hours, 33 minutes;power-on;/c2960s-universalk9-mz.122-55.SE7/c2960s-universalk9-mz.122-55.SE7.bin;['WS-C2960S-48TS-S'];['FOC1819Z4YK'];0xF;['38:1C:1A:95:7E:00'];
