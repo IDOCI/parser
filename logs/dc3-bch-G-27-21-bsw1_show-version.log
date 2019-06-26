@@ -1,0 +1,50 @@
+show version
+Cisco IOS Software, CBS31X0 Software (CBS31X0-UNIVERSAL-M), Version 12.2(58)SE1, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2011 by Cisco Systems, Inc.
+Compiled Thu 05-May-11 11:00 by prod_rel_team
+
+ROM: Bootstrap program is CBS31X0 boot loader
+BOOTLDR: CBS31X0 Boot Loader (CBS31X0-HBOOT-M) Version 12.2(0.0.951)SE3, CISCO DEVELOPMENT TEST VERSION
+
+dc3-bch-G-27-21-bsw1 uptime is 2 weeks, 4 days, 14 minutes
+System returned to ROM by bus error at PC 0x1DD2138, address 0x0
+System restarted at 16:41:07 MSK Mon Jul 30 2018
+System image file is "flash:/cbs31x0-universal-mz.122-58.SE1/cbs31x0-universal-mz.122-58.SE1.bin"
+
+License Level: ipbase
+License Type: Permanent
+Next reload license Level: ipbase
+
+cisco WS-CBS3120X-S (PowerPC405) processor (revision E0) with 262144K bytes of memory.
+Processor board ID FOC1537T0GZ
+Last reset from bus error
+2 Virtual Ethernet interfaces
+1 FastEthernet interface
+26 Gigabit Ethernet interfaces
+2 Ten Gigabit Ethernet interfaces
+The password-recovery mechanism is enabled.
+
+512K bytes of flash-simulated non-volatile configuration memory.
+Base ethernet MAC Address       : 68:BC:0C:DD:F0:00
+Motherboard assembly number     : 73-10920-11
+Motherboard serial number       : FOC15355J1U
+Model revision number           : E0
+Motherboard revision number     : A0
+Model number                    : WS-CBS3120X-S
+System serial number            : FOC1537T0GZ
+Top Assembly Part Number        : 800-28520-03
+Top Assembly Revision Number    : A0
+Version ID                      : V03
+CLEI Code Number                : COUIA36CAA
+Hardware Board Revision Number  : 0x00
+
+
+Switch Ports Model              SW Version            SW Image                 
+------ ----- -----              ----------            ----------               
+*    1 28    WS-CBS3120X-S      12.2(58)SE1           CBS31X0-UNIVERSAL-M      
+
+
+Configuration register is 0xF
+
+dc3-bch-G-27-21-bsw1#

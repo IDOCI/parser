@@ -1,0 +1,48 @@
+show version
+Cisco Nexus Operating System (NX-OS) Software
+TAC support: http://www.cisco.com/tac
+Documents: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html
+Copyright (c) 2002-2013, Cisco Systems, Inc. All rights reserved.
+The copyrights to certain works contained herein are owned by
+other third parties and are used and distributed under license.
+Some parts of this software are covered under the GNU Public
+License. A copy of the license is available at
+http://www.gnu.org/licenses/gpl.html.
+
+Software
+  BIOS:      version 3.6.0
+  loader:    version N/A
+  kickstart: version 6.0(2)N1(2)
+  system:    version 6.0(2)N1(2)
+  Power Sequencer Firmware: 
+             Module 1: version v1.0
+             Module 3: version v5.0
+  Microcontroller Firmware:        version v1.2.0.1
+  SFP uC:    Module 1: v1.0.0.0
+  QSFP uC:   Module not detected
+  BIOS compile time:       05/09/2012
+  kickstart image file is: bootflash:///n5000-uk9-kickstart.6.0.2.N1.2.bin
+  kickstart compile time:  3/14/2013 1:00:00 [03/14/2013 11:53:55]
+  system image file is:    bootflash:///n5000-uk9.6.0.2.N1.2.bin
+  system compile time:     3/14/2013 1:00:00 [03/14/2013 14:28:50]
+
+
+Hardware
+  cisco Nexus5548 Chassis ("O2 32X10GE/Modular Universal Platform Supervisor")
+  Intel(R) Xeon(R) CPU         with 8262944 kB of memory.
+  Processor Board ID FOC17286TV5
+
+  Device name: DC3-ext-dsw01
+  bootflash:    2007040 kB
+
+Kernel uptime is 230 day(s), 20 hour(s), 7 minute(s), 28 second(s)
+
+Last reset at 268330 usecs after  Fri Dec 29 21:02:25 2017
+
+  Reason: Reset Requested by CLI command reload
+  System version: 6.0(2)N1(2)
+  Service: 
+
+plugin
+  Core Plugin, Ethernet Plugin
+DC3-ext-dsw01# 
