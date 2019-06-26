@@ -12,21 +12,25 @@ root = Tk()
 root.withdraw()
 
 ## Функция
-def fnParse(fname, arRe_tables, arOutFiles):
-    input_file = open(fname, encoding='utf-8')
-    raw_text_data = input_file.read()
-    for i,tbl in enumerate(arRe_tables):
+def fnParse(fname, arPatFnames, arOutFiles):
+    for i,str in enumerate(arPatFnames):
+        # print(tbl.header)
+        input_file = open(fname, encoding='utf-8')
+        raw_text_data = input_file.read()
+        input_file.close()
         outfile=arOutFiles[i]
+        f=open(tempdir+'/'+str)
+        tbl = textfsm.TextFSM(f)
+        f.close()
         fsm_results = tbl.ParseText(raw_text_data)
         counter = 0
         for row in fsm_results:
-            print(row)
             for s in row:
                 outfile.write("%s;" % s)
+                if '68:BC:0C:DD:F0:00' in s:
+                    print(f'Найдено 68:BC:0C:DD:F0:00, i={i}, fname={fname}')
             outfile.write("\n")
             counter += 1
-        print("Write %d records" % counter)
-
 ## Диалоговое окно
 #Выбор директории по диалоговому окну
 directory=filedialog.askdirectory(title='Please select a directory')
@@ -39,18 +43,17 @@ patterns=''
 
 #Получаем список таблиц преобразования в переменную arRe_tables
 patterns = os.listdir(tempdir)
-arRe_tables=[]
+arPatFnames=[]
 arOutf=[]
-for i,str in enumerate( patterns):
-    f=open(tempdir+'/'+str)
-    tbl=textfsm.TextFSM(f)
-    arRe_tables.append(tbl)
+for i,str in enumerate(patterns):
+    arPatFnames.append(str)
     ss=f"{directory}/result_{i}.csv"
     outfile=open(ss, "w+")
     arOutf.append(outfile)
     # Display result as CSV and write it to the output file
     # First the column headers...
-    print(tbl.header)
+    f=open(tempdir+'/'+str)
+    tbl = textfsm.TextFSM(f)
     for s in tbl.header:
         outfile.write("%s;" % s)
     outfile.write("\n")
@@ -66,7 +69,7 @@ sheet = wbk.add_sheet('sheet 1')
 files=os.listdir(directory)
 for fname in files:
     if fname.endswith('.log'):
-        fnParse(directory+"/"+fname, arRe_tables, arOutf)
+        fnParse(f"{directory}/{fname}", arPatFnames, arOutf)
 
 #
 #
