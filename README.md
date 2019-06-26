@@ -14,14 +14,7 @@
 
 # Installation
 
-
-Установите модули:
-
-```sh
->>> pip install tkinter
->>> pip install textfsm
->>> pip install xlwt
-```
+Запустить open.bat
 
 # Todos
  - **Объединить вывод в один файл**
