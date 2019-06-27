@@ -5,6 +5,7 @@ import xlwt
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import Tk
+from termcolor import colored
 ## tkinter
 
 #Закрытие системного окна tkinter
@@ -12,33 +13,63 @@ root = Tk()
 root.withdraw()
 
 ## Функция
-def fnParse(fname, arPatFnames, arOutFiles):
+def fnParse(fname, arPatFnames, arOutFiles,log):
+    log=''
+    done=False
+    input_file = open(fname, encoding='utf-8')
+    input_file.readline()
+    ss=input_file.readline()
+    if 'Cisco IOS' in ss:
+        word='IOS'
+    elif 'Cisco Nexus' in ss:
+        word='nxos'
+    else:
+        word=''
+    input_file.close()
     for i,str in enumerate(arPatFnames):
-        # print(tbl.header)
-        input_file = open(fname, encoding='utf-8')
-        raw_text_data = input_file.read()
-        input_file.close()
-        outfile=arOutFiles[i]
-        f=open(tempdir+'/'+str)
-        tbl = textfsm.TextFSM(f)
-        f.close()
-        fsm_results = tbl.ParseText(raw_text_data)
-        counter = 0
-        for row in fsm_results:
-            for s in row:
-                outfile.write("%s;" % s)
-                if '68:BC:0C:DD:F0:00' in s:
-                    print(f'Найдено 68:BC:0C:DD:F0:00, i={i}, fname={fname}')
-            outfile.write("\n")
-            counter += 1
+        if (word=='') or (word.lower() in str.lower()):
+            input_file = open(fname, encoding='utf-8')
+            raw_text_data = input_file.read()
+            input_file.close()
+            outfile=arOutFiles[i]
+            f=open(tempdir+'/'+str)
+            tbl = textfsm.TextFSM(f)
+            f.close()
+            try:
+                fsm_results = tbl.ParseText(raw_text_data)
+
+                OK=True
+            except:
+                OK=False
+
+            if OK:
+                counter = 0
+                for row in fsm_results:
+                    for s in row:
+                        done=True
+                        outfile.write("%s;" % s)
+                    outfile.write("\n")
+                    counter += 1
+    if done:
+        log+="Parsed "+fname+'\n'
+        print(colored("Parsed "+fname, 'green'))
+
+    else:
+        log+="Not parsed "+fname+'\n'
+        print(colored("Not parsed "+fname, 'red'))
+    logfile.write(log)
+
+
+
 ## Диалоговое окно
 #Выбор директории по диалоговому окну
-directory=filedialog.askdirectory(title='Please select a directory')
+directory=filedialog.askdirectory(title='Please select logs directory')
 
 ## Читаем файлы шаблонов
 
 #Каталог из которого будем брать шаблон
-tempdir= (directory+'/templates')
+tempdir= filedialog.askdirectory(title='Please select templates directory')
+#tempdir= (directory+'/templates')
 patterns=''
 
 #Получаем список таблиц преобразования в переменную arRe_tables
@@ -47,11 +78,16 @@ arPatFnames=[]
 arOutf=[]
 for i,str in enumerate(patterns):
     arPatFnames.append(str)
-    ss=f"{directory}/result_{i}.csv"
+    ss=f"{directory}/../results/result_{str.replace('.template','')}.csv"
+    if not os.path.isdir(f"{directory}/../results"):
+        os.makedirs(f"{directory}/../results")
     outfile=open(ss, "w+")
     arOutf.append(outfile)
     # Display result as CSV and write it to the output file
     # First the column headers...
+    logss=f"{directory}/../logfile.log"
+    logfile=open(logss, "w+")
+    logfile.close()
     f=open(tempdir+'/'+str)
     tbl = textfsm.TextFSM(f)
     for s in tbl.header:
@@ -67,9 +103,12 @@ sheet = wbk.add_sheet('sheet 1')
 
 #создаем список файлов, которые будем читать
 files=os.listdir(directory)
+logss=f"{directory}/../logfile.log"
+logfile=open(logss, "w+")
+log=''
 for fname in files:
     if fname.endswith('.log'):
-        fnParse(f"{directory}/{fname}", arPatFnames, arOutf)
+        fnParse(f"{directory}/{fname}", arPatFnames, arOutf, log)
 
 #
 #
@@ -90,3 +129,5 @@ for fname in files:
 # outfile.close()
 for f in arOutf:
     f.close()
+#print ('All files parsed')
+logfile.close()
