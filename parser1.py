@@ -5,7 +5,11 @@ import xlwt
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import Tk
-from termcolor import colored
+from pyexcel.book import Book
+from pyexcel.core import save_as, get_sheet
+from pyexcel_xlsxw import save_data
+#раскомментировать, если надо удалить папку results
+#import shutil
 ## tkinter
 
 #Закрытие системного окна tkinter
@@ -52,11 +56,11 @@ def fnParse(fname, arPatFnames, arOutFiles,log):
                     counter += 1
     if done:
         log+="Parsed "+fname+'\n'
-        print(colored("Parsed "+fname, 'green'))
+        print("\x1b[32mParsed "+fname+"\x1b[0m")
 
     else:
         log+="Not parsed "+fname+'\n'
-        print(colored("Not parsed "+fname, 'red'))
+        print("\x1b[31mNot parsed "+fname+"\x1b[0m")
     logfile.write(log)
 
 
@@ -106,22 +110,22 @@ for fname in files:
         fnParse(f"{directory}/{fname}", arPatFnames, arOutf, log)
 logfile.close()
 
-#
-# print(arRe_tables[0])
-# for i,tbl in enumerate(arRe_tables):
-#     f=arOutf[i]
-#     for s in tbl.header:
-#         f.write("%s;" % s)
-#     f.write("\n")
-#
-# #открываем файлы поочередно
-# trns=str.maketrans('','','\t\n\v\f\r')
-# for i,str in enumerate(files):
-#     if str.endswith('log'):
-#         for j,tbl in enumerate(arRe_tables):
-#             fnParse(directory+'/'+str, tbl, arOutf(j), i)
-#
-# outfile.close()
 for f in arOutf:
     f.close()
+def merge_csv_to_a_book(filelist, outfilename):
 
+    merged = Book()
+    for file_name in filelist:
+        sheet = get_sheet(file_name=file_name,delimiter=';')
+        _, tail = os.path.split(file_name.replace("result_",'').replace('.csv',''))
+        sheet.name = tail
+        merged += sheet
+    merged.save_as(outfilename)
+
+if not os.path.isdir(f"{directory}/../results/excel"):
+    os.makedirs(f"{directory}/../results/excel")
+input=glob.glob(f"{directory}/../results/*.csv")
+merge_csv_to_a_book(input,f"{directory}/../results/excel/output.xlsx")
+
+#раскомментировать, если надо удалить папку results
+#shutil.rmtree(f"{directory}/../results")
