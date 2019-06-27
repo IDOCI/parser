@@ -83,11 +83,6 @@ for i,str in enumerate(patterns):
         os.makedirs(f"{directory}/../results")
     outfile=open(ss, "w+")
     arOutf.append(outfile)
-    # Display result as CSV and write it to the output file
-    # First the column headers...
-    logss=f"{directory}/../logfile.log"
-    logfile=open(logss, "w+")
-    logfile.close()
     f=open(tempdir+'/'+str)
     tbl = textfsm.TextFSM(f)
     for s in tbl.header:
@@ -109,8 +104,8 @@ log=''
 for fname in files:
     if fname.endswith('.log'):
         fnParse(f"{directory}/{fname}", arPatFnames, arOutf, log)
+logfile.close()
 
-#
 #
 # print(arRe_tables[0])
 # for i,tbl in enumerate(arRe_tables):
@@ -129,5 +124,4 @@ for fname in files:
 # outfile.close()
 for f in arOutf:
     f.close()
-#print ('All files parsed')
-logfile.close()
+
