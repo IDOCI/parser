@@ -19,3 +19,5 @@ Cisco log files parser based on textfsm module.
 | ------------- | -------------------- |
 | `open.bat`      | For Windows       |
 | `open.sh`   | For Linux     |
+# Requirements
+Python 3.7.3 or older
