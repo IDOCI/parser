@@ -17,5 +17,5 @@ Cisco log files parser based on textfsm module.
 
 | OS | Description                    |
 | ------------- | -------------------- |
-| `open.bat`      | For Window.       |
+| `open.bat`      | For Windows       |
 | `open.sh`   | For Linux     |
