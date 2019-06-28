@@ -1,20 +1,22 @@
 # Parser
-Парсер log-файлов Cisco на основе модуля textfsm   .
+Cisco log files parser based on textfsm module.
 
-  - Графический выбор папки
-  - Поддержка нескольких шаблонов
-  - Итоговый файл-таблица Excel
+   - Graphic folder selection
+   - Support for multiple templates
+   - Output .csv/.xlsx files
+   - Action loggin
 
 # New Features!
-  - *Добавлен вывод распарсеных/нераспарсеных данных*
-  - *Обновлен .bat файл*
-  - *Обновлена каталогизация файлов*
-  - *Добавлен .log вывод программы*
-  - *Сделан вывод в .xlsx файл*
-  - *Удален модуль цвета*
+   - *Added output parsed / non-parsed data*
+   - *Updated .bat file*
+   - *Updated file cataloging*
+   - *Added .log output of the program*
+   - *Output to .xlsx file*
+   - *Removed color module*
+   - *Removed unnecessary modules*
 # Installation
 
-Запустить open.bat
-
-
-
+| OS | Description                    |
+| ------------- | -------------------- |
+| `open.bat`      | For Window.       |
+| `open.sh`   | For Linux     |

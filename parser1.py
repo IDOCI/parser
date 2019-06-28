@@ -1,22 +1,37 @@
+"""
+    Cisco parser
+    ~~~~~~~~~~~~~~~~~~~
+To use it directly from this file you must install
+pip install tkinter
+pip install textfsm
+pip install xlwt
+pip install os
+pip install re
+pip install pyexcel
+pip install pyexcel-xlsx
+pip install pyexcel-xlsxw
+"""
+
+
 import textfsm
 import os
 import re
-import xlwt
-import tkinter as tk
+import glob
 from tkinter import filedialog
 from tkinter import Tk
 from pyexcel.book import Book
 from pyexcel.core import save_as, get_sheet
 from pyexcel_xlsxw import save_data
-#раскомментировать, если надо удалить папку results
+# uncomment if you want to delete the results folder
 #import shutil
 ## tkinter
 
-#Закрытие системного окна tkinter
+# Closing the system window tkinter
 root = Tk()
 root.withdraw()
 
-## Функция
+## Function
+
 def fnParse(fname, arPatFnames, arOutFiles,log):
     log=''
     done=False
@@ -41,11 +56,9 @@ def fnParse(fname, arPatFnames, arOutFiles,log):
             f.close()
             try:
                 fsm_results = tbl.ParseText(raw_text_data)
-
                 OK=True
             except:
                 OK=False
-
             if OK:
                 counter = 0
                 for row in fsm_results:
@@ -57,7 +70,6 @@ def fnParse(fname, arPatFnames, arOutFiles,log):
     if done:
         log+="Parsed "+fname+'\n'
         print("\x1b[32mParsed "+fname+"\x1b[0m")
-
     else:
         log+="Not parsed "+fname+'\n'
         print("\x1b[31mNot parsed "+fname+"\x1b[0m")
@@ -65,18 +77,19 @@ def fnParse(fname, arPatFnames, arOutFiles,log):
 
 
 
-## Диалоговое окно
-#Выбор директории по диалоговому окну
+## Dialog window
+# Select the directory for the tkinter
+
 directory=filedialog.askdirectory(title='Please select logs directory')
 
-## Читаем файлы шаблонов
-
+## Reading template files
 #Каталог из которого будем брать шаблон
+
 tempdir= filedialog.askdirectory(title='Please select templates directory')
-#tempdir= (directory+'/templates')
 patterns=''
 
-#Получаем список таблиц преобразования в переменную arRe_tables
+# Get a list of parts of the conversion to the variable arPatFnames
+
 patterns = os.listdir(tempdir)
 arPatFnames=[]
 arOutf=[]
@@ -93,14 +106,10 @@ for i,str in enumerate(patterns):
         outfile.write("%s;" % s)
     outfile.write("\n")
     f.close()
-## Сохранение в Excel (доделать)
-# новая книга формата Excel:
-wbk = xlwt.Workbook('utf-8')
-# добавляем лист:
-sheet = wbk.add_sheet('sheet 1')
-## Временный вывод
 
-#создаем список файлов, которые будем читать
+##csv output
+# create a list of files that will be read
+
 files=os.listdir(directory)
 logss=f"{directory}/../logfile.log"
 logfile=open(logss, "w+")
@@ -109,11 +118,12 @@ for fname in files:
     if fname.endswith('.log'):
         fnParse(f"{directory}/{fname}", arPatFnames, arOutf, log)
 logfile.close()
-
 for f in arOutf:
     f.close()
-def merge_csv_to_a_book(filelist, outfilename):
 
+##Excel saving
+
+def merge_csv_to_a_book(filelist, outfilename):
     merged = Book()
     for file_name in filelist:
         sheet = get_sheet(file_name=file_name,delimiter=';')
@@ -121,11 +131,10 @@ def merge_csv_to_a_book(filelist, outfilename):
         sheet.name = tail
         merged += sheet
     merged.save_as(outfilename)
-
 if not os.path.isdir(f"{directory}/../results/excel"):
     os.makedirs(f"{directory}/../results/excel")
 input=glob.glob(f"{directory}/../results/*.csv")
 merge_csv_to_a_book(input,f"{directory}/../results/excel/output.xlsx")
 
-#раскомментировать, если надо удалить папку results
+# uncomment if you want to delete the results folder
 #shutil.rmtree(f"{directory}/../results")
